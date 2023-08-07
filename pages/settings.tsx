@@ -19,15 +19,12 @@ import formatPropertyType from "../utils/formatPropertyType";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { parseCookies } from "../utils/parseCookies";
-import { response } from "express";
 
 const Settings = () => {
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     const parsedCookies = parseCookies(document.cookie);
-
-    console.log(parsedCookies);
 
     if (!parsedCookies || !parsedCookies["login_token"]) {
       return;
