@@ -7,10 +7,8 @@ import {
   Center,
   Heading,
   VStack,
-  Spacer,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { TextProps } from "recharts";
 
 const PropertyCarousel = ({ slides }: any) => {
   const arrowStyles = {
