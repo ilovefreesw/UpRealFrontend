@@ -13,6 +13,7 @@ import {
   Card,
   CardBody,
   Spinner,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import formatPropertyType from "../utils/formatPropertyType";
