@@ -19,10 +19,7 @@ import {
 import format from "format-number";
 import { useHover } from "usehooks-ts";
 import { useEffect, useRef, useState } from "react";
-import formatPropertyType from "../utils/formatPropertyType";
 import { useRouter } from "next/router";
-import { query } from "express";
-import { evalColor } from "../utils/evalColor";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import axios from "axios";
 
