@@ -13,13 +13,14 @@ import {
   useBreakpointValue,
   useMediaQuery,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import Layout from "../components/Layout";
 import PropertyCard from "../components/PropertyCard";
 import { BsFilterLeft } from "react-icons/bs";
 import PropertyFilters from "../components/PropertyFilters";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { all } from "axios";
 import { METRO_AREAS, ZIPCODES } from "../utils/zipCodes";
 import GoogleMapReact from "google-map-react";
 import { HiLocationMarker } from "react-icons/hi";
@@ -76,6 +77,9 @@ const PropertySearch = () => {
     false,
   ]);
   const [selectedProfile, setSelectedProfile] = useState("");
+  const [filterReady, setFilterReady] = useState("0");
+  const [filter, setFliter] = useState("0");
+  const toast = useToast();
 
   const setPageValues = () => {
     const start = page == -1 ? 0 : (page - 1) * 9;
@@ -85,7 +89,7 @@ const PropertySearch = () => {
     let obj = {};
 
     for (const key of keys) {
-      if (propMap) {
+      if (propMap && allPropertyData instanceof Map) {
         obj[key] = allPropertyData.get(key);
         continue;
       }
@@ -97,6 +101,10 @@ const PropertySearch = () => {
 
   useEffect(() => {
     if (!allPropertyData || !allPropertyKeys || page == 0 || maxPages == 0) {
+      // console.log(allPropertyData);
+      // console.log(allPropertyKeys);
+      // console.log(page);
+      // console.log(maxPages);
       return;
     }
 
@@ -105,7 +113,7 @@ const PropertySearch = () => {
 
       setPageValues();
     }
-  }, [page, propMap]);
+  }, [page, propMap, filterReady]);
 
   useEffect(() => {
     axios
@@ -129,6 +137,139 @@ const PropertySearch = () => {
         }
       });
   }, []);
+
+  useEffect(() => {
+    if (!allPropertyData) {
+      return;
+    }
+
+    setPropMap(true);
+
+    if (filter == "0") {
+      if (!selectedProfile) {
+        toast({
+          title: "Error",
+          description: "Select Profile to View Results",
+          status: "error",
+          colorScheme: "red",
+          duration: 2000,
+          isClosable: true,
+        });
+        setFliter("1");
+        return;
+      }
+      let entries = Object.entries(allPropertyData);
+
+      if (entries.length == 0 && allPropertyData instanceof Map) {
+        //entries = Object.fromEntries(allPropertyData.entries());
+        entries = Object.entries(Object.fromEntries(allPropertyData.entries()));
+      }
+
+      // Sort the array based on the "Fit Score"
+      entries.sort((a, b) => b[1]["Fit Score"] - a[1]["Fit Score"]);
+
+      // Create a new Map from the sorted array
+      const sortedMap = new Map(entries);
+
+      setMaxPages(Math.floor(sortedMap.size / 9));
+      setAllPropertyKeys(Array.from(sortedMap.keys()));
+      setAllPropertyData(sortedMap);
+
+      setPage(1);
+    } else if (filter == "1") {
+      let entries = Object.entries(allPropertyData);
+
+      if (entries.length == 0 && allPropertyData instanceof Map) {
+        //entries = Object.fromEntries(allPropertyData.entries());
+        entries = Object.entries(Object.fromEntries(allPropertyData.entries()));
+      }
+
+      // Sort the array based on the "Fit Score"
+      entries.sort(
+        (a, b) => b[1]["current_estimate"] - a[1]["current_estimate"]
+      );
+
+      // Create a new Map from the sorted array
+      const sortedMap = new Map(entries);
+
+      setMaxPages(Math.floor(sortedMap.size / 9));
+      setAllPropertyKeys(Array.from(sortedMap.keys()));
+      setAllPropertyData(sortedMap);
+
+      setPage(1);
+    } else if (filter == "2") {
+      let entries = Object.entries(allPropertyData);
+
+      if (entries.length == 0 && allPropertyData instanceof Map) {
+        //entries = Object.fromEntries(allPropertyData.entries());
+        entries = Object.entries(Object.fromEntries(allPropertyData.entries()));
+      }
+
+      // Sort the array based on the "Fit Score"
+      entries.sort(
+        (a, b) =>
+          b[1]["property_description"]["beds"] -
+          a[1]["property_description"]["beds"]
+      );
+
+      // Create a new Map from the sorted array
+      const sortedMap = new Map(entries);
+
+      setMaxPages(Math.floor(sortedMap.size / 9));
+      setAllPropertyKeys(Array.from(sortedMap.keys()));
+      setAllPropertyData(sortedMap);
+
+      setPage(1);
+    } else if (filter == "3") {
+      let entries = Object.entries(allPropertyData);
+
+      if (entries.length == 0 && allPropertyData instanceof Map) {
+        //entries = Object.fromEntries(allPropertyData.entries());
+        entries = Object.entries(Object.fromEntries(allPropertyData.entries()));
+      }
+
+      // Sort the array based on the "Fit Score"
+      entries.sort(
+        (a, b) =>
+          b[1]["property_description"]["baths"] -
+          a[1]["property_description"]["baths"]
+      );
+
+      // Create a new Map from the sorted array
+      const sortedMap = new Map(entries);
+
+      setMaxPages(Math.floor(sortedMap.size / 9));
+      setAllPropertyKeys(Array.from(sortedMap.keys()));
+      setAllPropertyData(sortedMap);
+
+      setPage(1);
+    } else if (filter == "4") {
+      let entries = Object.entries(allPropertyData);
+
+      if (entries.length == 0 && allPropertyData instanceof Map) {
+        //entries = Object.fromEntries(allPropertyData.entries());
+        entries = Object.entries(Object.fromEntries(allPropertyData.entries()));
+      }
+
+      // Sort the array based on the "Fit Score"
+      entries.sort(
+        (a, b) =>
+          b[1]["property_description"]["prop_sqft"] -
+          a[1]["property_description"]["prop_sqft"]
+      );
+
+      // Create a new Map from the sorted array
+      const sortedMap = new Map(entries);
+
+      setMaxPages(Math.floor(sortedMap.size / 9));
+      setAllPropertyKeys(Array.from(sortedMap.keys()));
+      setAllPropertyData(sortedMap);
+
+      setPage(1);
+    }
+
+    setFilterReady(filter);
+  }, [filter]);
 
   useEffect(() => {
     if (!propertyData) {
@@ -211,10 +352,6 @@ const PropertySearch = () => {
             setAllPropertyKeys(Array.from(sortedMap.keys()));
             setAllPropertyData(sortedMap);
             setPropMap(true);
-
-            console.log(Math.floor(sortedMap.size / 9));
-            console.log();
-            console.log(sortedMap.get("8992761489"));
 
             setPage(1);
 
@@ -321,10 +458,6 @@ const PropertySearch = () => {
                         setAllPropertyData(sortedMap);
                         setPropMap(true);
 
-                        console.log(Math.floor(sortedMap.size / 9));
-                        console.log();
-                        console.log(sortedMap.get("8992761489"));
-
                         setPage(1);
 
                         //setPage(2);
@@ -363,7 +496,11 @@ const PropertySearch = () => {
                   }
                 })}
               </Select>
-              <PropertyFilters aria-label="filters_button" />
+              <PropertyFilters
+                aria-label="filters_button"
+                value={filter}
+                setValue={setFliter}
+              />
               {layout == 2 ? (
                 <PaginationUI
                   pageNum={page}

@@ -15,26 +15,10 @@ import {
   Center,
   RadioGroup,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { BsFilterLeft } from "react-icons/bs";
 
-const PropertyFilters = ({}: any) => {
+const PropertyFilters = ({ value, setValue }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [value, setValue] = useState("0");
-
-  const clickable = (index: number, arr: boolean[]) => {
-    for (let i = 0; i < arr.length; i++) {
-      if (i == index) {
-        continue;
-      }
-
-      if (arr[i]) {
-        return true;
-      }
-    }
-
-    return false;
-  };
 
   return (
     <>
