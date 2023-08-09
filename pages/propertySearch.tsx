@@ -26,6 +26,7 @@ import { HiLocationMarker } from "react-icons/hi";
 import GetCenterFromDegrees from "../utils/calcCenterCoordinate";
 import PaginationUI from "../components/PaginationUI";
 import CustomSlider from "../components/CustomSlider";
+import { useRouter } from "next/router";
 
 const onChildMouseEnter = () => {};
 const onChildMouseLeave = () => {};
@@ -61,6 +62,8 @@ const PropertySearch = () => {
   const [defaultProps, setDefaultProps] = useState(null);
   const [page, setPage] = useState(0);
   const [profileNames, setProfileNames] = useState([]);
+  const [propMap, setPropMap] = useState(false);
+  const router = useRouter();
   const [hoverArr, setHoverArr] = useState([
     false,
     false,
@@ -75,13 +78,17 @@ const PropertySearch = () => {
   const [selectedProfile, setSelectedProfile] = useState("");
 
   const setPageValues = () => {
-    const start = (page - 1) * 9;
+    const start = page == -1 ? 0 : (page - 1) * 9;
     const end = start + 9;
 
     const keys = allPropertyKeys.slice(start, end);
     let obj = {};
 
     for (const key of keys) {
+      if (propMap) {
+        obj[key] = allPropertyData.get(key);
+        continue;
+      }
       obj[key] = allPropertyData[key];
     }
 
@@ -98,7 +105,7 @@ const PropertySearch = () => {
 
       setPageValues();
     }
-  }, [page]);
+  }, [page, propMap]);
 
   useEffect(() => {
     axios
@@ -171,6 +178,53 @@ const PropertySearch = () => {
   }, [propertyData]);
 
   useEffect(() => {
+    if (router.query.profileName) {
+      setSelectedProfile(router.query.profileName as string);
+
+      axios
+        .get(
+          "https://seashell-app-dxi4j.ondigitalocean.app/getPropertiesByProfile",
+          {
+            params: { name: router.query.profileName as string },
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          if (response.status == 200 && !response.data.error) {
+            let newObj = {};
+
+            for (let obj of response.data) {
+              let key = Object.keys(obj)[0];
+
+              newObj[key] = obj[key];
+            }
+
+            const entries = Object.entries(newObj);
+
+            // Sort the array based on the "Fit Score"
+            entries.sort((a, b) => b[1]["Fit Score"] - a[1]["Fit Score"]);
+
+            // Create a new Map from the sorted array
+            const sortedMap = new Map(entries);
+
+            setMaxPages(Math.floor(sortedMap.size / 9));
+            setAllPropertyKeys(Array.from(sortedMap.keys()));
+            setAllPropertyData(sortedMap);
+            setPropMap(true);
+
+            console.log(Math.floor(sortedMap.size / 9));
+            console.log();
+            console.log(sortedMap.get("8992761489"));
+
+            setPage(1);
+
+            //setPage(2);
+          }
+        });
+    }
+  }, [router.isReady]);
+
+  useEffect(() => {
     if (!propertyData) {
       return;
     }
@@ -225,18 +279,78 @@ const PropertySearch = () => {
           <VStack ml={4} spacing={5} mt={4}>
             <HStack w="100%">
               <Select
-                placeholder="Select Profile"
+                placeholder={"Select Profile"}
                 minW="15vw"
                 maxW="15rem"
                 onChange={(e) => {
                   setSelectedProfile(e.target.value);
+
+                  const profile = e.target.value;
+
+                  if (profile == "Select Profile") {
+                    return;
+                  }
+
+                  axios
+                    .get(
+                      "https://seashell-app-dxi4j.ondigitalocean.app/getPropertiesByProfile",
+                      { params: { name: profile }, withCredentials: true }
+                    )
+                    .then((response) => {
+                      if (response.status == 200 && !response.data.error) {
+                        let newObj = {};
+
+                        for (let obj of response.data) {
+                          let key = Object.keys(obj)[0];
+
+                          newObj[key] = obj[key];
+                        }
+
+                        const entries = Object.entries(newObj);
+
+                        // Sort the array based on the "Fit Score"
+                        entries.sort(
+                          (a, b) => b[1]["Fit Score"] - a[1]["Fit Score"]
+                        );
+
+                        // Create a new Map from the sorted array
+                        const sortedMap = new Map(entries);
+
+                        setMaxPages(Math.floor(sortedMap.size / 9));
+                        setAllPropertyKeys(Array.from(sortedMap.keys()));
+                        setAllPropertyData(sortedMap);
+                        setPropMap(true);
+
+                        console.log(Math.floor(sortedMap.size / 9));
+                        console.log();
+                        console.log(sortedMap.get("8992761489"));
+
+                        setPage(1);
+
+                        //setPage(2);
+                      }
+                    });
                 }}
               >
                 {profileNames.map((value, i) => {
                   if (i == 0) {
-                    return <option key={i}>{value.toString()}</option>;
+                    return (
+                      <option
+                        key={i}
+                        selected={selectedProfile == value.toString()}
+                      >
+                        {value.toString()}
+                      </option>
+                    );
                   } else {
-                    return <option key={i}>{value.toString()}</option>;
+                    return (
+                      <option
+                        key={i}
+                        selected={selectedProfile == value.toString()}
+                      >
+                        {value.toString()}
+                      </option>
+                    );
                   }
                 })}
               </Select>
@@ -287,6 +401,11 @@ const PropertySearch = () => {
                         return (
                           <GridItem rowSpan={1} colSpan={1} key={i}>
                             <PropertyCard
+                              profileFit={
+                                propertyData[key]["Fit Score"]
+                                  ? propertyData[key]["Fit Score"]
+                                  : -1
+                              }
                               selectedProfile={selectedProfile}
                               apiInfo={propertyData[key]}
                               imageUrl={propertyData[key]["photo"]}
@@ -355,6 +474,11 @@ const PropertySearch = () => {
                         return (
                           <GridItem rowSpan={1} colSpan={1} key={i}>
                             <PropertyCard
+                              profileFit={
+                                propertyData[key]["Fit Score"]
+                                  ? propertyData[key]["Fit Score"]
+                                  : -1
+                              }
                               propId={key}
                               selectedProfile={selectedProfile}
                               apiInfo={propertyData[key]}
@@ -406,6 +530,11 @@ const PropertySearch = () => {
                         return (
                           <GridItem rowSpan={1} colSpan={1} key={i}>
                             <PropertyCard
+                              profileFit={
+                                propertyData[key]["Fit Score"]
+                                  ? propertyData[key]["Fit Score"]
+                                  : -1
+                              }
                               propId={key}
                               selectedProfile={selectedProfile}
                               apiInfo={propertyData[key]}

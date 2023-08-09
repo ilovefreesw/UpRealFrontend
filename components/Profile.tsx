@@ -27,16 +27,22 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner,
 } from "@chakra-ui/react";
 
 import ViewProfileDetail from "./ViewProfileDetail";
 import EditProfileDetail from "./EditProfileDetail";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const Profile = ({ profile_attr }) => {
   // No profile attributes - return
   if (!profile_attr) {
     return;
   }
+
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Card>
@@ -68,9 +74,30 @@ const Profile = ({ profile_attr }) => {
           <ViewProfileDetail profile_attr={profile_attr} />
 
           <Tooltip label="Secrch properties with Profile">
-            <IconButton aria-label="Profile Detail" icon={<Search2Icon />}>
-              {" "}
-            </IconButton>
+            <IconButton
+              aria-label="Profile Detail"
+              icon={isLoading ? <Spinner /> : <Search2Icon />}
+              onClick={() => {
+                if (isLoading) {
+                  return;
+                }
+
+                localStorage.setItem(
+                  "currentProfile",
+                  profile_attr.profile_name.value
+                );
+
+                setIsLoading(true);
+
+                setTimeout(
+                  () =>
+                    router.push(
+                      `/propertySearch?profileName=${profile_attr.profile_name.value}`
+                    ),
+                  1000
+                );
+              }}
+            ></IconButton>
           </Tooltip>
 
           <EditProfileDetail profile_attr={profile_attr} />

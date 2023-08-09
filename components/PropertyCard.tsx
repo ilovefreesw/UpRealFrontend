@@ -39,6 +39,7 @@ interface PropertyCardProps {
   propId: string;
   small?: boolean;
   selectedProfile: string;
+  profileFit: number;
 }
 
 const PropertyCard = ({
@@ -57,6 +58,7 @@ const PropertyCard = ({
   propId,
   small,
   selectedProfile,
+  profileFit,
 }: PropertyCardProps) => {
   const property = {
     imageUrl,
@@ -78,7 +80,7 @@ const PropertyCard = ({
 
   const flipScore = 3.0;
   const rentScore = 4.0;
-  const fitNum = 89;
+  const fitNum = profileFit;
   const fit: string = fitNum > 80 ? "Strong" : fitNum > 40 ? "Medium" : "Weak";
 
   useEffect(() => {
@@ -262,23 +264,25 @@ const PropertyCard = ({
               <TagLabel>Flip Score: {flipScore.toFixed(1)}</TagLabel>
             </Tag>
           </Tooltip>
-          <Tooltip
-            hasArrow
-            label={"Fit with profile " + `${fitNum.toString()}/100`}
-            bg="gray.300"
-            color="black"
-          >
-            <Tag
-              size="md"
-              key={"sm"}
-              variant="outline"
-              colorScheme={
-                fitNum > 80 ? "green" : fitNum > 40 ? "yellow" : "red"
-              }
+          {fitNum == -1 ? null : (
+            <Tooltip
+              hasArrow
+              label={"Fit with profile " + `${fitNum.toString()}/100`}
+              bg="gray.300"
+              color="black"
             >
-              <TagLabel>{fit} Fit</TagLabel>
-            </Tag>
-          </Tooltip>
+              <Tag
+                size="md"
+                key={"sm"}
+                variant="outline"
+                colorScheme={
+                  fitNum > 80 ? "green" : fitNum > 40 ? "yellow" : "red"
+                }
+              >
+                <TagLabel>{fit} Fit</TagLabel>
+              </Tag>
+            </Tooltip>
+          )}
         </VStack>
       </Grid>
     </Box>

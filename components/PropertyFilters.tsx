@@ -9,15 +9,32 @@ import {
   ModalBody,
   ModalFooter,
   Text,
-  Checkbox,
+  Radio,
   VStack,
   Box,
   Center,
+  RadioGroup,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { BsFilterLeft } from "react-icons/bs";
 
 const PropertyFilters = ({}: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [value, setValue] = useState("0");
+
+  const clickable = (index: number, arr: boolean[]) => {
+    for (let i = 0; i < arr.length; i++) {
+      if (i == index) {
+        continue;
+      }
+
+      if (arr[i]) {
+        return true;
+      }
+    }
+
+    return false;
+  };
 
   return (
     <>
@@ -28,7 +45,7 @@ const PropertyFilters = ({}: any) => {
         leftIcon={<BsFilterLeft size="3vh" />}
         w="10rem"
       >
-        Show Filters
+        Sort By
       </Button>
 
       <Modal
@@ -42,36 +59,63 @@ const PropertyFilters = ({}: any) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Select Filters</ModalHeader>
+          <ModalHeader>All Filters</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Center>
               <VStack alignItems="start">
-                <VStack alignItems="start">
-                  <Checkbox>Profile Fit</Checkbox>
-                </VStack>
-                <Text fontSize="15pt" fontWeight="bold">
-                  Property Type
-                </Text>
-                <VStack alignItems="start" ml="4vw">
-                  <Checkbox defaultChecked>Single Family</Checkbox>
-                  <Checkbox>Multi- Family</Checkbox>
-                  <Checkbox>Land</Checkbox>
-                </VStack>
-                <Text fontSize="15pt" fontWeight="bold">
-                  Sort By
-                </Text>
-                <VStack alignItems="start" ml="4vw">
-                  <Text fontSize="13pt" fontWeight="semibold">
-                    Property
-                  </Text>
-                  <VStack alignItems="start" ml="2vw">
-                    <Checkbox defaultChecked>Price</Checkbox>
-                    <Checkbox>Beds</Checkbox>
-                    <Checkbox>Baths</Checkbox>
-                    <Checkbox>Size (sqft)</Checkbox>
+                <RadioGroup onChange={setValue} value={value}>
+                  <VStack alignItems="start">
+                    <Radio value="0">Profile Fit</Radio>
                   </VStack>
-                </VStack>
+                  {/* <Text fontSize="15pt" fontWeight="bold">
+                  Property Type
+                </Text> */}
+                  {/* <VStack alignItems="start" ml="4vw">
+                  <Radio
+                    defaultChecked
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSingleClicked(true);
+                      }
+                    }}
+                  >
+                    Single Family
+                  </Radio>
+                  <Radio
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSingleClicked(true);
+                      }
+                    }}
+                  >
+                    Multi- Family
+                  </Radio>
+                  <Radio
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSingleClicked(true);
+                      }
+                    }}
+                  >
+                    Land
+                  </Radio>
+                </VStack> */}
+                  <Text fontSize="15pt" fontWeight="bold">
+                    Sort By
+                  </Text>
+                  <VStack alignItems="start" ml="4vw">
+                    <Text fontSize="13pt" fontWeight="semibold">
+                      Property
+                    </Text>
+                    <VStack alignItems="start" ml="2vw">
+                      <Radio value="1">Price</Radio>
+                      <Radio value="2">Beds</Radio>
+                      <Radio value="3">Baths</Radio>
+                      <Radio value="4">Size (sqft)</Radio>
+                    </VStack>
+                  </VStack>
+                </RadioGroup>
               </VStack>
             </Center>
           </ModalBody>

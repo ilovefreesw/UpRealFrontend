@@ -136,6 +136,9 @@ const IndexPage = () => {
 
                                 return (
                                   <PropertyCard
+                                    profileFit={
+                                      val["Fit Score"] ? val["Fit Score"] : -1
+                                    }
                                     imageUrl={val.imageUrl}
                                     imageAlt="property image"
                                     apiInfo={JSON.parse(val.apiInfo)}
