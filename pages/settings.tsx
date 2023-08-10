@@ -61,7 +61,11 @@ const Settings = () => {
             <Center>
               <Avatar
                 size="lg"
-                name={`${userInfo["firstName"]} ${userInfo["lastName"]}`}
+                name={
+                  userInfo
+                    ? `${userInfo["firstName"]} ${userInfo["lastName"]}`
+                    : ""
+                }
                 bg="teal.300"
                 color="black"
                 alignSelf="start"
