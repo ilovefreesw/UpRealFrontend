@@ -355,6 +355,10 @@ const PropertySearch = () => {
 
             setPage(1);
 
+            if (localStorage.getItem("reloaded") == "false") {
+              localStorage.setItem("reloaded", "true");
+              router.reload();
+            }
             //setPage(2);
           }
         });

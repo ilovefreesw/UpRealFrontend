@@ -89,6 +89,8 @@ const Profile = ({ profile_attr }) => {
 
                 setIsLoading(true);
 
+                localStorage.setItem("reloaded", "false");
+
                 setTimeout(
                   () =>
                     router.push(

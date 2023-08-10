@@ -106,7 +106,7 @@ const IndexPage = () => {
                         position="relative"
                       >
                         <Heading position="absolute" left="10" top="10">
-                          Flip 1
+                          {item.profile_name.value}
                         </Heading>
                         <HStack w="100%" justifyContent="space-evenly" mt="5vh">
                           <Profile profile_attr={item} key={i}></Profile>

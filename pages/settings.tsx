@@ -61,7 +61,7 @@ const Settings = () => {
             <Center>
               <Avatar
                 size="lg"
-                name="Sanay Nesargi"
+                name={`${userInfo["firstName"]} ${userInfo["lastName"]}`}
                 bg="teal.300"
                 color="black"
                 alignSelf="start"
