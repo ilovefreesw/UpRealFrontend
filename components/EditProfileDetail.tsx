@@ -23,6 +23,8 @@ import {
 
 import CustomSlider from "./CustomSlider";
 import { useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 const EditProfileDetail = ({ profile_attr }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -44,6 +46,10 @@ const EditProfileDetail = ({ profile_attr }) => {
   const [riskAppetite, setRiskAppetite] = useState(
     profile_attr.risk_appetite.value
   );
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
 
   const [budget, setBudget] = useState([
     profile_attr.purchase_budget.value_low,
@@ -467,7 +473,74 @@ const EditProfileDetail = ({ profile_attr }) => {
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={handleClose}>
+              <Button
+                colorScheme="blue"
+                mr={3}
+                onClick={async () => {
+                  handleClose();
+
+                  if (isLoading) {
+                    return;
+                  }
+
+                  if (profileType == "Rental") {
+                    await axios.post(
+                      "https://seashell-app-dxi4j.ondigitalocean.app/setProfile",
+                      {
+                        profile_type: profileType,
+                        location: metroLocation,
+                        risk: riskAppetite,
+                        budgetHigh: budget[1],
+                        budgetLow: budget[0],
+                        appHigh: appreciationTarget[1],
+                        appLow: appreciationTarget[0],
+                        cashflowHigh: cashFlowTarget[1],
+                        cashflowLow: cashFlowTarget[0],
+                        cocHigh: cashOnCash[1],
+                        cocLow: cashOnCash[0],
+                        mainHigh: maintenanceSpend[1],
+                        mainLow: maintenanceSpend[0],
+                        holdHigh: holdPeriod[1],
+                        holdLow: holdPeriod[0],
+                        name: profileName,
+                        update: true,
+                      },
+                      {
+                        headers: { "Content-Type": "multipart/form-data" },
+                        withCredentials: true,
+                      }
+                    );
+                  } else if (profileType == "Fix-and-Flip") {
+                    setIsLoading(true);
+                    await axios.post(
+                      "https://seashell-app-dxi4j.ondigitalocean.app/setProfile",
+                      {
+                        profile_type: "Fix and Flip",
+                        location: metroLocation,
+                        risk: riskAppetite,
+                        budgetHigh: budget[1],
+                        budgetLow: budget[0],
+                        afterRepairHigh: afterRepairValueTarget[1],
+                        afterRepairLow: afterRepairValueTarget[0],
+                        repairCostHigh: repairCostsTarget[1],
+                        repairCostLow: repairCostsTarget[0],
+                        cocHigh: cashOnCash[1],
+                        cocLow: cashOnCash[0],
+                        name: profileName,
+                        update: true,
+                      },
+                      {
+                        headers: { "Content-Type": "multipart/form-data" },
+                        withCredentials: true,
+                      }
+                    );
+                  }
+                  setIsLoading(false);
+                  handleClose();
+
+                  router.reload();
+                }}
+              >
                 Save
               </Button>
               <Button colorScheme="blue" mr={3} onClick={onClose}>
