@@ -150,8 +150,10 @@ const PropertyInfo = (props: any) => {
         <Center mt="15vh">
           <VStack h="100%" w="100%">
             <Grid
-              templateColumns={!sm ? "0.4fr 1fr 1fr" : "1fr 1fr"}
-              templateRows="0.9fr 0.1fr"
+              templateColumns={
+                !sm ? "0.6fr 1fr 1fr" : mobile ? "1fr" : "1fr 1fr"
+              }
+              templateRows="1fr"
               w="80%"
               bg="rgba(128, 203, 196, 0.1)"
               borderRadius="lg"
@@ -165,6 +167,7 @@ const PropertyInfo = (props: any) => {
                   onClick={() => router.push("/propertySearch")}
                 />
               ) : null}
+
               <GridItem w="100%" h="100%" colSpan={1} rowSpan={1} gap={-1}>
                 <HStack>
                   <VStack
