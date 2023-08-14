@@ -183,7 +183,7 @@ const NavBarLoggedIn = () => {
                 <Button
                   w="full"
                   bg="black"
-                  onClick={() => router.push("/profile")}
+                  onClick={() => router.push("/profiles")}
                 >
                   Account Settings
                 </Button>

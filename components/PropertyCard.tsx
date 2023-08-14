@@ -106,6 +106,7 @@ const PropertyCard = ({
   return (
     <Box
       w={!small ? "100%" : "65%"}
+      maxH={small ? "350px" : null}
       h="100%"
       borderWidth="1px"
       borderRadius="lg"
@@ -119,6 +120,8 @@ const PropertyCard = ({
           alt={property.imageAlt}
           w="100%"
           h="100%"
+          minH={small ? "200px" : "250px"}
+          maxH={small ? "200px" : "250px"}
           onClick={() => {
             router.push(
               {

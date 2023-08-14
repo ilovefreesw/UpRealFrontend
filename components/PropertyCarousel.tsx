@@ -16,7 +16,7 @@ const PropertyCarousel = ({ slides }: any) => {
     top: "50%",
     w: "auto",
     mt: "-22px",
-    p: "16px",
+    p: "-16px",
     color: "white",
     fontWeight: "bold",
     fontSize: "18px",

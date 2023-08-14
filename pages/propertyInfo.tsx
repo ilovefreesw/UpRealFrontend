@@ -29,6 +29,8 @@ import {
   useBreakpointValue,
   useMediaQuery,
   Spinner,
+  Heading,
+  Spacer,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -52,7 +54,7 @@ const MapPin = ({ onClick, hoverArr, index }: any) => {
       boxSize="4vh"
       color={hoverArr ? (hoverArr[index] ? "red.500" : "black") : "black"}
       //   _hover={{
-      //     color: "gray.500",
+      //     color: "gray.400",
       //     cursor: "pointer",
       //     zIndex: 99,
       //   }}
@@ -73,7 +75,7 @@ const PropertyInfo = (props: any) => {
   const router = useRouter();
   const [mobile] = useMediaQuery("(max-width: 500px)");
 
-  const sm = useBreakpointValue({ md: false, lg: false, sm: true });
+  const sm = useBreakpointValue({ md: true, lg: false, sm: true });
 
   useEffect(() => {
     if (propertyData || !props.router.query.data) {
@@ -148,95 +150,92 @@ const PropertyInfo = (props: any) => {
         <Center mt="15vh">
           <VStack h="100%" w="100%">
             <Grid
-              templateColumns="repeat(4, 1fr)"
+              templateColumns={!sm ? "0.4fr 1fr 1fr" : "1fr 1fr"}
               templateRows="0.9fr 0.1fr"
-              gap={6}
               w="80%"
               bg="rgba(128, 203, 196, 0.1)"
-              p={3}
               borderRadius="lg"
+              p={3}
             >
-              <GridItem w="100%" colSpan={!mobile ? 1 : 2}>
-                <Center>
-                  <VStack alignItems="start" spacing={2}>
-                    <Text fontSize="15pt" fontWeight="bold">
-                      {format({ prefix: "$" })(
-                        propertyData["current_estimate"]
-                      )}
-                    </Text>
-                    <Text>{propertyData["location"]["line"]}.</Text>
-                    <Tag>
-                      <HStack>
-                        <Icon
-                          as={BsCircleFill}
-                          boxSize="1vh"
-                          color="lightgreen"
-                        />
-                        <Text>Active Listing</Text>
-                      </HStack>
-                    </Tag>
-                    <Button
-                      leftIcon={<ArrowBackIcon />}
-                      onClick={() => router.push("/propertySearch")}
-                    >
-                      Back
-                    </Button>
-                  </VStack>
-                </Center>
-              </GridItem>
-              <GridItem w="100%" colSpan={!mobile ? 1 : 2}>
-                <Center>
-                  <VStack alignItems="start">
-                    <Text fontSize="12pt">
-                      {`${propertyData["location"]["city"]}, ${propertyData["location"]["state_code"]}`}
-                      {", "}
-                      {`${propertyData["location"]["zip_code"]}`}
-                    </Text>
-                    <HStack>
-                      <Badge variant="outline" colorScheme="green">
-                        {propertyData["property_description"]["beds"]} BEDS
-                      </Badge>
-                      <Badge variant="outline" colorScheme="green">
-                        {propertyData["property_description"]["baths"]} BATHS
-                      </Badge>
-                    </HStack>
-                    <HStack>
-                      <Badge variant="outline" colorScheme="green">
-                        {propertyData["property_description"]["prop_sqft"]} SQFT
-                      </Badge>
-                      {propertyData["listing_information"]["flags"][
-                        "is_new_listing"
-                      ] ? (
-                        <Badge variant="solid" colorScheme="green">
-                          New Listing
-                        </Badge>
-                      ) : null}
-                    </HStack>
-                  </VStack>
-                </Center>
-              </GridItem>
-              {!mobile ? (
-                <>
-                  <GridItem w="100%">
+              {!sm ? (
+                <IconButton
+                  aria-label="back"
+                  maxW="100px"
+                  icon={<ArrowBackIcon />}
+                  onClick={() => router.push("/propertySearch")}
+                />
+              ) : null}
+              <GridItem w="100%" h="100%" colSpan={1} rowSpan={1} gap={-1}>
+                <HStack>
+                  <VStack
+                    justifyContent="space-between"
+                    alignItems="start"
+                    minW="200px"
+                    maxW="200px"
+                    spacing={6}
+                  >
                     <Center>
-                      <VStack alignItems="start" spacing={-1}>
-                        <Text as="span" color="gray.500" fontSize="10pt">
-                          Price per sqft.
-                        </Text>
-                        <Text fontSize="20pt" fontWeight="bold">
-                          $
-                          {Math.round(
-                            propertyData["current_estimate"] /
-                              propertyData["property_description"]["prop_sqft"]
+                      <VStack alignItems="start" spacing={2}>
+                        <Text fontSize="15pt" fontWeight="bold">
+                          {format({ prefix: "$" })(
+                            propertyData["current_estimate"]
                           )}
                         </Text>
+                        <Text>{propertyData["location"]["line"]}.</Text>
+                        <Tag>
+                          <HStack>
+                            <Icon
+                              as={BsCircleFill}
+                              boxSize="1vh"
+                              color="lightgreen"
+                            />
+                            <Text>Active Listing</Text>
+                          </HStack>
+                        </Tag>
                       </VStack>
                     </Center>
-                  </GridItem>
-                  <GridItem w="100%">
+                    <Center>
+                      <VStack alignItems="start">
+                        <Text fontSize="12pt">
+                          {`${propertyData["location"]["city"]}, ${propertyData["location"]["state_code"]}`}
+                          {", "}
+                          {`${propertyData["location"]["zip_code"]}`}
+                        </Text>
+                        <HStack>
+                          <Badge variant="outline" colorScheme="green">
+                            {propertyData["property_description"]["beds"]} BEDS
+                          </Badge>
+                          <Badge variant="outline" colorScheme="green">
+                            {propertyData["property_description"]["baths"]}{" "}
+                            BATHS
+                          </Badge>
+                        </HStack>
+                        <HStack>
+                          <Badge variant="outline" colorScheme="green">
+                            {propertyData["property_description"]["prop_sqft"]}{" "}
+                            SQFT
+                          </Badge>
+                          {propertyData["listing_information"]["flags"][
+                            "is_new_listing"
+                          ] ? (
+                            <Badge variant="solid" colorScheme="green">
+                              New Listing
+                            </Badge>
+                          ) : null}
+                        </HStack>
+                      </VStack>
+                    </Center>
+                  </VStack>
+                  <VStack
+                    justifyContent="space-between"
+                    spacing={6}
+                    alignItems="start"
+                    minW="200px"
+                    maxW="200px"
+                  >
                     <Center>
                       <VStack alignItems="start" spacing={-1}>
-                        <Text as="span" color="gray.500" fontSize="10pt">
+                        <Text as="span" color="gray.400" fontSize="12pt">
                           Lot Size
                         </Text>
                         <Text fontSize="20pt" fontWeight="bold">
@@ -275,17 +274,36 @@ const PropertyInfo = (props: any) => {
                         </HStack>
                       </VStack>
                     </Center>
-                  </GridItem>
-                </>
-              ) : null}
-              <GridItem w="100%" rowSpan={1} colSpan={4}>
-                <Flex direction="row" justifyContent="space-evenly">
-                  <HStack spacing={3}>
+                    <Center>
+                      <VStack alignItems="start">
+                        <Text as="span" color="gray.400" fontSize="12pt">
+                          Price per sqft.
+                        </Text>
+                        <Text fontSize="20pt" fontWeight="bold">
+                          $
+                          {Math.round(
+                            propertyData["current_estimate"] /
+                              propertyData["property_description"]["prop_sqft"]
+                          )}
+                        </Text>
+                      </VStack>
+                    </Center>
+                  </VStack>
+                </HStack>
+              </GridItem>
+
+              <GridItem colSpan={1} w="100%" h="100%">
+                <VStack spacing={5}>
+                  <HStack
+                    justifyContent="space-between"
+                    minW="250px"
+                    maxW="250px"
+                  >
                     <VStack>
                       <Text
                         as="span"
-                        fontSize="10pt"
-                        color="gray.500"
+                        fontSize="12pt"
+                        color="gray.400"
                         alignSelf="start"
                       >
                         Rent Score
@@ -331,7 +349,7 @@ const PropertyInfo = (props: any) => {
                                 })
                             ) : (
                               <Text
-                                fontSize="xl"
+                                fontSize="20pt"
                                 fontWeight="bold"
                                 display="inline-flex"
                               >
@@ -348,8 +366,8 @@ const PropertyInfo = (props: any) => {
                     <VStack>
                       <Text
                         as="span"
-                        fontSize="10pt"
-                        color="gray.500"
+                        fontSize="12pt"
+                        color="gray.400"
                         alignSelf="start"
                       >
                         Flip Score
@@ -395,7 +413,7 @@ const PropertyInfo = (props: any) => {
                                 })
                             ) : (
                               <Text
-                                fontSize="xl"
+                                fontSize="20pt"
                                 fontWeight="bold"
                                 display="inline-flex"
                               >
@@ -409,11 +427,17 @@ const PropertyInfo = (props: any) => {
                         )}
                       </Tooltip>
                     </VStack>
+                  </HStack>
+                  <HStack
+                    justifyContent="space-between"
+                    minW="250px"
+                    maxW="250px"
+                  >
                     <VStack>
                       <Text
                         as="span"
-                        fontSize="10pt"
-                        color="gray.500"
+                        fontSize="12pt"
+                        color="gray.400"
                         alignSelf="start"
                       >
                         Area Score
@@ -436,7 +460,7 @@ const PropertyInfo = (props: any) => {
                               ))
                           ) : (
                             <Text
-                              fontSize="xl"
+                              fontSize="20pt"
                               fontWeight="bold"
                               display="inline-flex"
                             >
@@ -453,11 +477,11 @@ const PropertyInfo = (props: any) => {
                       <VStack>
                         <Text
                           as="span"
-                          fontSize="10pt"
-                          color="gray.500"
+                          fontSize="12pt"
+                          color="gray.400"
                           alignSelf="start"
                         >
-                          Fit Level
+                          Profile Fit Level
                         </Text>
                         <Center alignSelf="end">
                           <Tooltip
@@ -481,7 +505,7 @@ const PropertyInfo = (props: any) => {
                       </VStack>
                     ) : null}
                   </HStack>
-                </Flex>
+                </VStack>
               </GridItem>
             </Grid>
 
@@ -534,9 +558,10 @@ const PropertyInfo = (props: any) => {
                 ) : null}
               </Center>
             </HStack>
+
             <HStack alignSelf="start" mt="5vh" spacing="5vw" ml="10vw">
               <VStack alignItems="start" spacing={1}>
-                <Text as="span" color="gray.500">
+                <Text as="span" color="gray.400">
                   Property Type
                 </Text>
                 <Text fontSize="20pt" fontWeight="bold">
@@ -546,7 +571,7 @@ const PropertyInfo = (props: any) => {
                 </Text>
               </VStack>
               <VStack alignItems="start" spacing={1}>
-                <Text as="span" color="gray.500">
+                <Text as="span" color="gray.400">
                   Crime Grade
                 </Text>
                 <Text fontSize="20pt" fontWeight="bold">
