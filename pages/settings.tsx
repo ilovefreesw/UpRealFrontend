@@ -32,7 +32,7 @@ const Settings = () => {
     }
 
     axios
-      .get("https://seashell-app-dxi4j.ondigitalocean.app/getUserInfo", {
+      .get("https://hook.12122012.xyz/getUserInfo", {
         params: { token: parsedCookies["login_token"] },
         withCredentials: true,
       })

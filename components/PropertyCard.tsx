@@ -162,7 +162,7 @@ const PropertyCard = ({
             setClicked(!clicked);
 
             await axios.post(
-              "https://seashell-app-dxi4j.ondigitalocean.app/setLike",
+              "https://hook.12122012.xyz/setLike",
               {
                 propId,
                 imageUrl,

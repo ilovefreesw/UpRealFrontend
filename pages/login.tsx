@@ -149,7 +149,7 @@ const LogIn = () => {
 
                     setIsLoading(true);
                     const response = await axios.post(
-                      "https://seashell-app-dxi4j.ondigitalocean.app/login",
+                      "https://hook.12122012.xyz/login",
                       {
                         usernameOrEmail: usernameOrEmail,
                         password: password,

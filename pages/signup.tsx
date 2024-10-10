@@ -281,7 +281,7 @@ const SignUp = () => {
                     setIsLoading(true);
 
                     const response = await axios.post(
-                      "https://seashell-app-dxi4j.ondigitalocean.app/signup",
+                      "https://hook.12122012.xyz/signup",
                       {
                         firstname: firstName,
                         lastname: lastName,

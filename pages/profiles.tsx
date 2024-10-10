@@ -35,7 +35,7 @@ const ProfileCards = () => {
 
     // loadProfileFromFile(); // retrieve json data from file
     axios
-      .get("https://seashell-app-dxi4j.ondigitalocean.app/getProfileList", {
+      .get("https://hook.12122012.xyz/getProfileList", {
         withCredentials: true,
       })
       .then((response) => {

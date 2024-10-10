@@ -42,7 +42,7 @@ const IndexPage = () => {
     });
 
     axios
-      .get("https://seashell-app-dxi4j.ondigitalocean.app/getProfileList", {
+      .get("https://hook.12122012.xyz/getProfileList", {
         withCredentials: true,
       })
       .then((response) => {
@@ -54,7 +54,7 @@ const IndexPage = () => {
 
   useEffect(() => {
     axios
-      .get("https://seashell-app-dxi4j.ondigitalocean.app/getLikedProperties", {
+      .get("https://hook.12122012.xyz/getLikedProperties", {
         withCredentials: true,
       })
       .then((response) => {

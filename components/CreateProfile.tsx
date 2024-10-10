@@ -356,7 +356,7 @@ const CreateProfile = ({}) => {
 
                 if (profileType == "Rental") {
                   await axios.post(
-                    "https://seashell-app-dxi4j.ondigitalocean.app/setProfile",
+                    "https://hook.12122012.xyz/setProfile",
                     {
                       profile_type: profileType,
                       location: metroLocation,
@@ -383,7 +383,7 @@ const CreateProfile = ({}) => {
                 } else if (profileType == "Fix-and-Flip") {
                   setIsLoading(true);
                   await axios.post(
-                    "https://seashell-app-dxi4j.ondigitalocean.app/setProfile",
+                    "https://hook.12122012.xyz/setProfile",
                     {
                       profile_type: "Fix and Flip",
                       location: metroLocation,

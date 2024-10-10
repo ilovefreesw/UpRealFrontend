@@ -16,7 +16,7 @@ const isLoggedIn = async () => {
     }
 
     const response = await axios.post(
-      "https://seashell-app-dxi4j.ondigitalocean.app/verifyLogin",
+      "https://hook.12122012.xyz/verifyLogin",
       {
         token: parsedCookies["login_token"],
       },
