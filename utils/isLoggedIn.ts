@@ -16,7 +16,7 @@ const isLoggedIn = async () => {
     }
 
     const response = await axios.post(
-      "https://hook.12122012.xyz/verifyLogin",
+      "https://backend.upreal.us/verifyLogin",
       {
         token: parsedCookies["login_token"],
       },
