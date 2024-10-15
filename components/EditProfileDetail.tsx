@@ -485,7 +485,7 @@ const EditProfileDetail = ({ profile_attr }) => {
 
                   if (profileType == "Rental") {
                     await axios.post(
-                      "https://hook.12122012.xyz/setProfile",
+                      "https://backend.upreal.us/setProfile",
                       {
                         profile_type: profileType,
                         location: metroLocation,
@@ -513,7 +513,7 @@ const EditProfileDetail = ({ profile_attr }) => {
                   } else if (profileType == "Fix-and-Flip") {
                     setIsLoading(true);
                     await axios.post(
-                      "https://hook.12122012.xyz/setProfile",
+                      "https://backend.upreal.us/setProfile",
                       {
                         profile_type: "Fix and Flip",
                         location: metroLocation,

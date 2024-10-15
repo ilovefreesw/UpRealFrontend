@@ -162,7 +162,7 @@ const PropertyCard = ({
             setClicked(!clicked);
 
             await axios.post(
-              "https://hook.12122012.xyz/setLike",
+              "https://backend.upreal.us/setLike",
               {
                 propId,
                 imageUrl,
