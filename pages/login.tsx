@@ -149,7 +149,7 @@ const LogIn = () => {
 
                     setIsLoading(true);
                     const response = await axios.post(
-                      "https://hook.12122012.xyz/login",
+                      "https://backend.upreal.us/login",
                       {
                         usernameOrEmail: usernameOrEmail,
                         password: password,

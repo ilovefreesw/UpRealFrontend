@@ -117,7 +117,7 @@ const PropertySearch = () => {
 
   useEffect(() => {
     axios
-      .get("https://hook.12122012.xyz/getProfileNames", {
+      .get("https://backend.upreal.us/getProfileNames", {
         withCredentials: true,
       })
       .then((response) => {
@@ -127,7 +127,7 @@ const PropertySearch = () => {
       });
 
     axios
-      .get("https://hook.12122012.xyz/property")
+      .get("https://backend.upreal.us/property")
       .then((response) => {
         if (response.status == 200 && !response.data.error) {
           setMaxPages(Math.floor(response.data.length / 9));
@@ -324,7 +324,7 @@ const PropertySearch = () => {
 
       axios
         .get(
-          "https://hook.12122012.xyz/getPropertiesByProfile",
+          "https://backend.upreal.us/getPropertiesByProfile",
           {
             params: { name: router.query.profileName as string },
             withCredentials: true,
@@ -434,7 +434,7 @@ const PropertySearch = () => {
 
                   axios
                     .get(
-                      "https://hook.12122012.xyz/getPropertiesByProfile",
+                      "https://backend.upreal.us/getPropertiesByProfile",
                       { params: { name: profile }, withCredentials: true }
                     )
                     .then((response) => {

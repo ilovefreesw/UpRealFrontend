@@ -281,7 +281,7 @@ const SignUp = () => {
                     setIsLoading(true);
 
                     const response = await axios.post(
-                      "https://hook.12122012.xyz/signup",
+                      "https://backend.upreal.us/signup",
                       {
                         firstname: firstName,
                         lastname: lastName,

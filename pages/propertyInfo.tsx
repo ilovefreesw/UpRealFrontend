@@ -125,7 +125,7 @@ const PropertyInfo = (props: any) => {
     const address2 = `${propertyData["location"]["city"]}, ${propertyData["location"]["state_code"]}`;
 
     axios
-      .get("https://hook.12122012.xyz/propertyInfo", {
+      .get("https://backend.upreal.us/propertyInfo", {
         params: {
           address1,
           address2,

@@ -42,7 +42,7 @@ const IndexPage = () => {
     });
 
     axios
-      .get("https://hook.12122012.xyz/getProfileList", {
+      .get("https://backend.upreal.us/getProfileList", {
         withCredentials: true,
       })
       .then((response) => {
@@ -54,7 +54,7 @@ const IndexPage = () => {
 
   useEffect(() => {
     axios
-      .get("https://hook.12122012.xyz/getLikedProperties", {
+      .get("https://backend.upreal.us/getLikedProperties", {
         withCredentials: true,
       })
       .then((response) => {

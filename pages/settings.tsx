@@ -32,7 +32,7 @@ const Settings = () => {
     }
 
     axios
-      .get("https://hook.12122012.xyz/getUserInfo", {
+      .get("https://backend.upreal.us/getUserInfo", {
         params: { token: parsedCookies["login_token"] },
         withCredentials: true,
       })
